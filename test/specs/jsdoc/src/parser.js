@@ -181,7 +181,7 @@ describe('jsdoc/src/parser', () => {
         var sourceCode = 'javascript:/** @class */function Foo() {}';
 
         function handler(e) {
-          var doop = require('jsdoc/util/doop');
+          var doop = require('lodash/cloneDeep');
 
           e.doclet = doop(e.doclet);
           e.doclet.foo = 'bar';

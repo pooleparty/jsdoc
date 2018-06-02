@@ -1,6 +1,6 @@
 import Filter from 'jsdoc/src/filter';
 
-var doop = require('jsdoc/util/doop');
+var doop = require('lodash/cloneDeep');
 var env = require('jsdoc/env');
 var fs = require('jsdoc/fs');
 var helper = require('jsdoc/util/templateHelper');

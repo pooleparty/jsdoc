@@ -3,7 +3,7 @@
  *
  * @module plugins/eventDumper
  */
-'use strict';
+
 
 var _ = require('lodash');
 var dump = require('jsdoc/util/dumper').dump;
@@ -14,20 +14,20 @@ var conf = env.conf.eventDumper || {};
 
 // Dump the included parser events (defaults to all events)
 var events = conf.include || [
-    'parseBegin',
-    'fileBegin',
-    'beforeParse',
-    'jsdocCommentFound',
-    'symbolFound',
-    'newDoclet',
-    'fileComplete',
-    'parseComplete',
-    'processingComplete'
+  'parseBegin',
+  'fileBegin',
+  'beforeParse',
+  'jsdocCommentFound',
+  'symbolFound',
+  'newDoclet',
+  'fileComplete',
+  'parseComplete',
+  'processingComplete',
 ];
 
 // Don't dump the excluded parser events
 if (conf.exclude) {
-    events = _.difference(events, conf.exclude);
+  events = _.difference(events, conf.exclude);
 }
 
 /**
@@ -37,27 +37,27 @@ if (conf.exclude) {
  * @return {Object} The modified object.
  */
 function replaceNodeObjects(o) {
-    var doop = require('jsdoc/util/doop');
+  var doop = require('lodash/cloneDeep');
 
-    var OBJECT_PLACEHOLDER = '<Object>';
+  var OBJECT_PLACEHOLDER = '<Object>';
 
-    if (o.code && o.code.node) {
-        // don't break the original object!
-        o.code = doop(o.code);
-        o.code.node = OBJECT_PLACEHOLDER;
-    }
+  if (o.code && o.code.node) {
+    // don't break the original object!
+    o.code = doop(o.code);
+    o.code.node = OBJECT_PLACEHOLDER;
+  }
 
-    if (o.doclet && o.doclet.meta && o.doclet.meta.code && o.doclet.meta.code.node) {
-        // don't break the original object!
-        o.doclet.meta.code = doop(o.doclet.meta.code);
-        o.doclet.meta.code.node = OBJECT_PLACEHOLDER;
-    }
+  if (o.doclet && o.doclet.meta && o.doclet.meta.code && o.doclet.meta.code.node) {
+    // don't break the original object!
+    o.doclet.meta.code = doop(o.doclet.meta.code);
+    o.doclet.meta.code.node = OBJECT_PLACEHOLDER;
+  }
 
-    if (o.astnode) {
-        o.astnode = OBJECT_PLACEHOLDER;
-    }
+  if (o.astnode) {
+    o.astnode = OBJECT_PLACEHOLDER;
+  }
 
-    return o;
+  return o;
 }
 
 /**
@@ -67,35 +67,39 @@ function replaceNodeObjects(o) {
  * @return {object} The fixed-up object.
  */
 function cleanse(e) {
-    var result = {};
+  var result = {};
 
-    Object.keys(e).forEach(function(prop) {
-        // by default, don't stringify properties that contain an array of functions
-        if (!conf.includeFunctions && util.isArray(e[prop]) && e[prop][0] &&
-            String(typeof e[prop][0]) === 'function') {
-            result[prop] = 'function[' + e[prop].length + ']';
-        }
-        // never include functions that belong to the object
-        else if (typeof e[prop] !== 'function') {
-            result[prop] = e[prop];
-        }
-    });
-
-    // allow users to omit node objects, which can be enormous
-    if (conf.omitNodes) {
-        result = replaceNodeObjects(result);
+  Object.keys(e).forEach((prop) => {
+    // by default, don't stringify properties that contain an array of functions
+    if (
+      !conf.includeFunctions &&
+      util.isArray(e[prop]) &&
+      e[prop][0] &&
+      String(typeof e[prop][0]) === 'function'
+    ) {
+      result[prop] = `function[${e[prop].length}]`;
     }
+    // never include functions that belong to the object
+    else if (typeof e[prop] !== 'function') {
+      result[prop] = e[prop];
+    }
+  });
 
-    return result;
+  // allow users to omit node objects, which can be enormous
+  if (conf.omitNodes) {
+    result = replaceNodeObjects(result);
+  }
+
+  return result;
 }
 
 exports.handlers = {};
 
-events.forEach(function(eventType) {
-    exports.handlers[eventType] = function(e) {
-        console.log( dump({
-            type: eventType,
-            content: cleanse(e)
-        }) );
-    };
+events.forEach((eventType) => {
+  exports.handlers[eventType] = function (e) {
+    console.log(dump({
+      type: eventType,
+      content: cleanse(e),
+    }));
+  };
 });
