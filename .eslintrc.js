@@ -24,6 +24,7 @@ module.exports = {
     'block-scoped-var': 'off',
     'no-mixed-operators': 'off',
     'global-require': 'off',
+    'import/prefer-default-export': 'off',
     'import/no-unresolved': 'off',
     'import/no-dynamic-require': 'off',
     // git will switch LF based on OS, so rule should switch also
