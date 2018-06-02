@@ -19,6 +19,7 @@ import { parse } from './lib/jsdoc/opts/args';
 import { strip } from './lib/jsdoc/util/stripbom';
 import env from './lib/jsdoc/env';
 import { createParser } from './lib/jsdoc/src/parser';
+import Readme from './lib/jsdoc/readme';
 
 module.exports = (function () {
   var props = {
@@ -248,8 +249,6 @@ module.exports = (function () {
   }
 
   function buildSourceList() {
-    var Readme = require('./lib/jsdoc/readme');
-
     var packageJson;
     var readmeHtml;
     var sourceFile;
