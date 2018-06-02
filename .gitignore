@@ -3,6 +3,7 @@
 .tern-port
 .vscode/
 coverage/
+jest-coverage/
 /node_modules/
 
 # User-specific files
@@ -14,3 +15,5 @@ out/
 
 # Dotfile detritus
 .DS_Store
+
+dist/

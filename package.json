@@ -19,48 +19,68 @@
     "escape-string-regexp": "~1.0.5",
     "js2xmlparser": "~3.0.0",
     "klaw": "~2.0.0",
+    "lodash": "^4.17.10",
     "markdown-it": "~8.3.1",
     "markdown-it-named-headers": "~0.0.4",
     "marked": "~0.3.6",
     "mkdirp": "~0.5.1",
     "requizzle": "~0.2.1",
     "strip-json-comments": "~2.0.1",
-    "taffydb": "2.6.2",
-    "underscore": "~1.8.3"
+    "taffydb": "2.6.2"
   },
   "devDependencies": {
     "ajv": "~5.2.2",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.3",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.12.0",
     "gulp": "~3.9.1",
     "gulp-eslint": "~4.0.0",
     "gulp-json-editor": "~2.2.1",
-    "nyc": "~11.1.0"
+    "jest": "^23.1.0",
+    "nyc": "~11.1.0",
+    "prettier": "^1.13.4",
+    "prettier-eslint-cli": "^4.7.1",
+    "rimraf": "^2.6.2"
   },
   "engines": {
-    "node": ">=4.2.0"
+    "node": ">=8.11.2"
   },
   "scripts": {
-    "test": "gulp lint; gulp test"
+    "test": "jest lib/",
+    "lint": "eslint src/",
+    "lint:fix": "npm run lint -- --fix",
+    "clean": "rimraf dist",
+    "prebuild": "npm run clean",
+    "build": "BABEL_ENV=node babel src/ -s -d dist",
+    "formatAll": "prettier-eslint --write --ignore **/node_modules/** \"**/*.js\""
   },
   "bin": {
-    "jsdoc": "./jsdoc.js"
+    "jsdoc": "./lib/jsdoc.js"
   },
+  "files": [
+    "dist"
+  ],
   "greenkeeper": {
     "ignore": [
       "taffydb"
     ]
   },
-  "bugs": "https://github.com/jsdoc3/jsdoc/issues",
+  "bugs": "https://github.com/pooleparty/jsdoc/issues",
   "author": {
     "name": "Michael Mathews",
     "email": "micmath@gmail.com"
   },
   "contributors": [
-    {
-      "url": "https://github.com/jsdoc3/jsdoc/graphs/contributors"
-    }
+    "https://github.com/pooleparty/jsdoc/graphs/contributors"
   ],
-  "maintainers": {
-    "name": "Jeff Williams",
-    "email": "jeffrey.l.williams@gmail.com"
-  }
+  "maintainers": [
+    "Josh Poole jspoole04@gmail.com"
+  ]
 }

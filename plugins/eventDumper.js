@@ -5,7 +5,7 @@
  */
 'use strict';
 
-var _ = require('underscore');
+var _ = require('lodash');
 var dump = require('jsdoc/util/dumper').dump;
 var env = require('jsdoc/env');
 var util = require('util');
