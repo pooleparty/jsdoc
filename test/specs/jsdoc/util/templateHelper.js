@@ -1,6 +1,5 @@
 /* eslint quotes:0 */
 
-
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
 describe('jsdoc/util/templateHelper', () => {
@@ -10,7 +9,7 @@ describe('jsdoc/util/templateHelper', () => {
   var doop = require('lodash/cloneDeep');
   var env = require('jsdoc/env');
   var helper = require('jsdoc/util/templateHelper');
-  var logger = require('jsdoc/util/logger');
+  var logger = require('jsdoc/util/logger').default;
   var resolver = require('jsdoc/tutorial/resolver');
   var taffy = require('taffydb').taffy;
 

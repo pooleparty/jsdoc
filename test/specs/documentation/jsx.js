@@ -1,15 +1,13 @@
-'use strict';
+describe('JSX support', () => {
+  it('should parse JSX files without errors', () => {
+    var logger = require('jsdoc/util/logger').default;
 
-describe('JSX support', function() {
-    it('should parse JSX files without errors', function() {
-        var logger = require('jsdoc/util/logger');
+    function parseJsx() {
+      return jasmine.getDocSetFromFile('test/fixtures/jsx.js');
+    }
 
-        function parseJsx() {
-            return jasmine.getDocSetFromFile('test/fixtures/jsx.js');
-        }
-
-        spyOn(logger, 'error');
-        expect(parseJsx).not.toThrow();
-        expect(logger.error).not.toHaveBeenCalled();
-    });
+    spyOn(logger, 'error');
+    expect(parseJsx).not.toThrow();
+    expect(logger.error).not.toHaveBeenCalled();
+  });
 });

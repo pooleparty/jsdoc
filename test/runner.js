@@ -8,7 +8,7 @@
  */
 var env = require('jsdoc/env');
 var fs = require('jsdoc/fs');
-var logger = require('jsdoc/util/logger');
+var logger = require('jsdoc/util/logger').default;
 var path = require('path');
 
 fs.existsSync = fs.existsSync || path.existsSync;

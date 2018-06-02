@@ -1,9 +1,7 @@
-
-
 describe('jsdoc/tag/validator', () => {
   var doop = require('lodash/cloneDeep');
   var env = require('jsdoc/env');
-  var logger = require('jsdoc/util/logger');
+  var logger = require('jsdoc/util/logger').default;
   var tag = require('jsdoc/tag');
   var validator = require('jsdoc/tag/validator');
 

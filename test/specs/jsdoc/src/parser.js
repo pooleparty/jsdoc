@@ -1,6 +1,5 @@
 /* eslint no-script-url: 0 */
 
-
 describe('jsdoc/src/parser', () => {
   var fs = require('jsdoc/fs');
   var jsdoc = {
@@ -10,7 +9,7 @@ describe('jsdoc/src/parser', () => {
       parser: require('jsdoc/src/parser'),
     },
     util: {
-      logger: require('jsdoc/util/logger'),
+      logger: require('jsdoc/util/logger').default,
     },
   };
   var path = require('jsdoc/path');
@@ -291,9 +290,10 @@ describe('jsdoc/src/parser', () => {
 
       it('should not throw errors when parsing files with ES6 syntax', () => {
         function parse() {
-          var parserSrc =
-            `javascript:${
-              fs.readFileSync(path.join(jsdoc.env.dirname, 'test/fixtures/es6.js'), 'utf8')}`;
+          var parserSrc = `javascript:${fs.readFileSync(
+            path.join(jsdoc.env.dirname, 'test/fixtures/es6.js'),
+            'utf8',
+          )}`;
 
           parser.parse(parserSrc);
         }
@@ -302,9 +302,10 @@ describe('jsdoc/src/parser', () => {
       });
 
       it('should be able to parse its own source file', () => {
-        var parserSrc =
-          `javascript:${
-            fs.readFileSync(path.join(jsdoc.env.dirname, 'lib/jsdoc/src/parser.js'), 'utf8')}`;
+        var parserSrc = `javascript:${fs.readFileSync(
+          path.join(jsdoc.env.dirname, 'lib/jsdoc/src/parser.js'),
+          'utf8',
+        )}`;
 
         function parse() {
           parser.parse(parserSrc);

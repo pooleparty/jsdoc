@@ -19,7 +19,7 @@ const jsdocpath = require('./lib/jsdoc/path');
 const stripJsonComments = require('strip-json-comments');
 const app = require('./lib/jsdoc/app');
 const env = require('./lib/jsdoc/env');
-const logger = require('./lib/jsdoc/util/logger');
+const logger = require('./lib/jsdoc/util/logger').default;
 const Readme = require('./lib/jsdoc/readme');
 const stripBom = require('./lib/jsdoc/util/stripbom');
 

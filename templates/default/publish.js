@@ -1,10 +1,10 @@
 import Filter from 'jsdoc/src/filter';
+import logger from 'jsdoc/util/logger';
 
 var doop = require('lodash/cloneDeep');
 var env = require('jsdoc/env');
 var fs = require('jsdoc/fs');
 var helper = require('jsdoc/util/templateHelper');
-var logger = require('jsdoc/util/logger');
 var path = require('jsdoc/path');
 var taffy = require('taffydb').taffy;
 var template = require('jsdoc/template');

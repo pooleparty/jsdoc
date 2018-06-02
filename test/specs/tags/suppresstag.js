@@ -1,42 +1,40 @@
-'use strict';
+describe('@suppress tag', () => {
+  var env = require('jsdoc/env');
+  var logger = require('jsdoc/util/logger').default;
 
-describe('@suppress tag', function() {
-    var env = require('jsdoc/env');
-    var logger = require('jsdoc/util/logger');
+  var allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
 
-    var allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
+  beforeEach(() => {
+    env.conf.tags.allowUnknownTags = false;
+    spyOn(logger, 'error');
+  });
 
-    beforeEach(function() {
-        env.conf.tags.allowUnknownTags = false;
-        spyOn(logger, 'error');
+  afterEach(() => {
+    jasmine.restoreTagDictionary();
+    env.conf.tags.allowUnknownTags = allowUnknownTags;
+  });
+
+  describe('JSDoc tags', () => {
+    beforeEach(() => {
+      jasmine.replaceTagDictionary('jsdoc');
     });
 
-    afterEach(function() {
-        jasmine.restoreTagDictionary();
-        env.conf.tags.allowUnknownTags = allowUnknownTags;
+    it('should not recognize the @suppress tag', () => {
+      jasmine.getDocSetFromFile('test/fixtures/suppresstag.js');
+
+      expect(logger.error).toHaveBeenCalled();
+    });
+  });
+
+  describe('Closure Compiler tags', () => {
+    beforeEach(() => {
+      jasmine.replaceTagDictionary('closure');
     });
 
-    describe('JSDoc tags', function() {
-        beforeEach(function() {
-            jasmine.replaceTagDictionary('jsdoc');
-        });
+    it('should recognize the @suppress tag', () => {
+      jasmine.getDocSetFromFile('test/fixtures/suppresstag.js');
 
-        it('should not recognize the @suppress tag', function() {
-            jasmine.getDocSetFromFile('test/fixtures/suppresstag.js');
-
-            expect(logger.error).toHaveBeenCalled();
-        });
+      expect(logger.error).not.toHaveBeenCalled();
     });
-
-    describe('Closure Compiler tags', function() {
-        beforeEach(function() {
-            jasmine.replaceTagDictionary('closure');
-        });
-
-        it('should recognize the @suppress tag', function() {
-            jasmine.getDocSetFromFile('test/fixtures/suppresstag.js');
-
-            expect(logger.error).not.toHaveBeenCalled();
-        });
-    });
+  });
 });

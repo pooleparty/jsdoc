@@ -1,43 +1,41 @@
-'use strict';
+describe('@preserve tag', () => {
+  var env = require('jsdoc/env');
+  var logger = require('jsdoc/util/logger').default;
 
-describe('@preserve tag', function() {
-    var env = require('jsdoc/env');
-    var logger = require('jsdoc/util/logger');
+  var allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
 
-    var allowUnknownTags = Boolean(env.conf.tags.allowUnknownTags);
+  beforeEach(() => {
+    env.conf.tags.allowUnknownTags = false;
+    spyOn(logger, 'error');
+  });
 
-    beforeEach(function() {
-        env.conf.tags.allowUnknownTags = false;
-        spyOn(logger, 'error');
+  afterEach(() => {
+    jasmine.restoreTagDictionary();
+    env.conf.tags.allowUnknownTags = allowUnknownTags;
+  });
+
+  describe('JSDoc tags', () => {
+    beforeEach(() => {
+      jasmine.replaceTagDictionary('jsdoc');
     });
 
-    afterEach(function() {
-        jasmine.restoreTagDictionary();
-        env.conf.tags.allowUnknownTags = allowUnknownTags;
+    it('should not recognize the @preserve tag', () => {
+      jasmine.getDocSetFromFile('test/fixtures/preservetag.js');
+
+      expect(logger.error).toHaveBeenCalled();
+    });
+  });
+
+  describe('Closure Compiler tags', () => {
+    beforeEach(() => {
+      jasmine.replaceTagDictionary('closure');
     });
 
-    describe('JSDoc tags', function() {
-        beforeEach(function() {
-            jasmine.replaceTagDictionary('jsdoc');
-        });
+    it("should set the doclet's `license` property to the tag value", () => {
+      var docSet = jasmine.getDocSetFromFile('test/fixtures/preservetag.js');
+      var x = docSet.getByLongname('x')[0];
 
-        it('should not recognize the @preserve tag', function() {
-            jasmine.getDocSetFromFile('test/fixtures/preservetag.js');
-
-            expect(logger.error).toHaveBeenCalled();
-        });
+      expect(x.license).toBe('My cool license goes here.');
     });
-
-    describe('Closure Compiler tags', function() {
-        beforeEach(function() {
-            jasmine.replaceTagDictionary('closure');
-        });
-
-        it('should set the doclet\'s `license` property to the tag value', function() {
-            var docSet = jasmine.getDocSetFromFile('test/fixtures/preservetag.js');
-            var x = docSet.getByLongname('x')[0];
-
-            expect(x.license).toBe('My cool license goes here.');
-        });
-    });
+  });
 });

@@ -12,7 +12,7 @@
 const util = require('util');
 const stripJsonComments = require('strip-json-comments');
 const { createParser } = require('./lib/jsdoc/src/parser');
-const logger = require('./lib/jsdoc/util/logger');
+const logger = require('./lib/jsdoc/util/logger').default;
 const stripBom = require('./lib/jsdoc/util/stripbom');
 const app = require('./lib/jsdoc/app');
 var env = require('./lib/jsdoc/env');
