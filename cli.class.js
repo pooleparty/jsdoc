@@ -9,6 +9,8 @@
  *
  * @private
  */
+import app from './lib/jsdoc/app';
+
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
@@ -17,7 +19,6 @@ const Config = require('./lib/jsdoc/config');
 const jsdocfs = require('./lib/jsdoc/fs');
 const jsdocpath = require('./lib/jsdoc/path');
 const stripJsonComments = require('strip-json-comments');
-const app = require('./lib/jsdoc/app');
 const env = require('./lib/jsdoc/env');
 const logger = require('./lib/jsdoc/util/logger').default;
 const Readme = require('./lib/jsdoc/readme');
