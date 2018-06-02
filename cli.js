@@ -9,14 +9,16 @@
  *
  * @private
  */
+import _ from 'lodash';
+import util from 'util';
+import stripJsonComments from 'strip-json-comments';
 import app from './lib/jsdoc/app';
-
-const util = require('util');
-const stripJsonComments = require('strip-json-comments');
-const { createParser } = require('./lib/jsdoc/src/parser');
-const logger = require('./lib/jsdoc/util/logger').default;
-const stripBom = require('./lib/jsdoc/util/stripbom');
-var env = require('./lib/jsdoc/env');
+import logger from './lib/jsdoc/util/logger';
+import Config from './lib/jsdoc/config';
+import { parse } from './lib/jsdoc/opts/args';
+import { strip } from './lib/jsdoc/util/stripbom';
+import env from './lib/jsdoc/env';
+import { createParser } from './lib/jsdoc/src/parser';
 
 module.exports = (function () {
   var props = {
@@ -36,7 +38,7 @@ module.exports = (function () {
     var path = require('path');
 
     // allow this to throw--something is really wrong if we can't read our own package file
-    var info = JSON.parse(stripBom.strip(fs.readFileSync(path.join(env.dirname, 'package.json'), 'utf8')));
+    var info = JSON.parse(strip(fs.readFileSync(path.join(env.dirname, 'package.json'), 'utf8')));
 
     env.version = {
       number: info.version,
@@ -48,9 +50,6 @@ module.exports = (function () {
 
   // TODO: docs
   cli.loadConfig = function () {
-    var _ = require('lodash');
-    var args = require('./lib/jsdoc/opts/args');
-    var Config = require('./lib/jsdoc/config');
     var config;
     var fs = require('./lib/jsdoc/fs');
     var path = require('./lib/jsdoc/path');
@@ -64,7 +63,7 @@ module.exports = (function () {
     };
 
     try {
-      env.opts = args.parse(env.args);
+      env.opts = parse(env.args);
     } catch (e) {
       console.error(`${e.message}\n`);
       cli.printHelp().then(() => {
@@ -96,10 +95,7 @@ module.exports = (function () {
       }
       env.conf = new Config(config).get();
     } catch (e) {
-      cli.exit(
-        1,
-        `Cannot parse the config file ${confPath}: ${e}\n${FATAL_ERROR_MESSAGE}`,
-      );
+      cli.exit(1, `Cannot parse the config file ${confPath}: ${e}\n${FATAL_ERROR_MESSAGE}`);
     }
 
     // look for options on the command line, in the config file, and in the defaults, in that order
@@ -228,15 +224,15 @@ module.exports = (function () {
 
       return Promise.resolve(0);
     }
-      return cli
-        .createParser()
-        .parseFiles()
-        .processParseResults()
-        .then(() => {
-          env.run.finish = new Date();
+    return cli
+      .createParser()
+      .parseFiles()
+      .processParseResults()
+      .then(() => {
+        env.run.finish = new Date();
 
-          return 0;
-        });
+        return 0;
+      });
   };
 
   function readPackageJson(filepath) {
@@ -385,9 +381,9 @@ module.exports = (function () {
 
       return Promise.resolve();
     }
-      cli.resolveTutorials();
+    cli.resolveTutorials();
 
-      return cli.generateDocs();
+    return cli.generateDocs();
   };
 
   cli.dumpParseResults = function () {
@@ -438,10 +434,8 @@ module.exports = (function () {
 
       return Promise.resolve(publishPromise);
     }
-      logger.fatal(`${env.opts.template
-          } does not export a "publish" function. Global ` +
-          '"publish" functions are no longer supported.');
-
+    logger.fatal(`${env.opts.template} does not export a "publish" function. Global ` +
+        '"publish" functions are no longer supported.');
 
     return Promise.resolve();
   };
