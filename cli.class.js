@@ -302,7 +302,7 @@ export default class CLI {
 
   // TODO: docs
   scanFiles = () => {
-    const { Filter } = require('./lib/jsdoc/src/filter');
+    const Filter = require('./lib/jsdoc/src/filter').default;
 
     let filter;
 

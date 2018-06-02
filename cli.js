@@ -294,7 +294,7 @@ module.exports = (function () {
 
   // TODO: docs
   cli.scanFiles = function () {
-    var Filter = require('./lib/jsdoc/src/filter').Filter;
+    var Filter = require('./lib/jsdoc/src/filter').default;
 
     var filter;
 

@@ -1,11 +1,11 @@
-
+import Filter from 'jsdoc/src/filter';
 import Scanner from 'jsdoc/src/scanner';
 
 describe('jsdoc/src/scanner', () => {
   var env = require('jsdoc/env');
   var path = require('jsdoc/path');
 
-  var filter = new (require('jsdoc/src/filter')).Filter({
+  var filter = new Filter({
     includePattern: new RegExp('.+\\.js(doc)?$'),
     excludePattern: new RegExp('(^|\\/|\\\\)_'),
   });
