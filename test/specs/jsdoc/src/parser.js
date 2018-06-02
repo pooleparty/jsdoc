@@ -6,7 +6,7 @@ describe('jsdoc/src/parser', () => {
   var jsdoc = {
     env: require('jsdoc/env'),
     src: {
-      handlers: require('jsdoc/src/handlers'),
+      handlers: require('jsdoc/src/handlers').default,
       parser: require('jsdoc/src/parser'),
     },
     util: {

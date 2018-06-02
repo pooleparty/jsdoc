@@ -9,7 +9,7 @@ describe('railsTemplate plugin', function() {
     var plugin = require(pluginPath);
 
     require('jsdoc/plugins').installPlugins([pluginPath], parser);
-    require('jsdoc/src/handlers').attachTo(parser);
+    require('jsdoc/src/handlers').default.attachTo(parser);
 
     it('should remove <% %> rails template tags from the source of *.erb files', function() {
         var docSet = parser.parse([path.join(env.dirname, 'plugins/test/fixtures/railsTemplate.js.erb')]);

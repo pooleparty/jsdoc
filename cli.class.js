@@ -323,7 +323,7 @@ export default class CLI {
   };
 
   createParser = () => {
-    const handlers = require('./lib/jsdoc/src/handlers');
+    const handlers = require('./lib/jsdoc/src/handlers').default;
     const parser = require('./lib/jsdoc/src/parser');
     const plugins = require('./lib/jsdoc/plugins');
 
