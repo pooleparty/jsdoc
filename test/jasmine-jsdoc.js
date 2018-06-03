@@ -1,26 +1,15 @@
 /* global jasmine: true */
+import fs from '../lib/jsdoc/fs';
+import * as path from '../lib/jsdoc/path';
+import dictionary, { Dictionary } from '../lib/jsdoc/tag/dictionary';
+import { defineTags } from '../lib/jsdoc/tag/dictionary/definitions';
+import env from '../lib/jsdoc/env';
+import { _replaceDictionary as replaceDocletDictionary } from '../lib/jsdoc/doclet';
+import { augmentAll } from '../lib/jsdoc/augment';
+import { createParser } from '../lib/jsdoc/src/parser';
+import { attachTo } from '../lib/jsdoc/src/handlers';
 
-
-var fs = require('jsdoc/fs');
-var path = require('jsdoc/path');
-
-var jsdoc = {
-  augment: require('jsdoc/augment'),
-  doclet: require('jsdoc/doclet'),
-  env: require('jsdoc/env'),
-  schema: require('jsdoc/schema'),
-  src: {
-    handlers: require('jsdoc/src/handlers').default,
-    parser: require('jsdoc/src/parser'),
-  },
-  tag: {
-    dictionary: require('jsdoc/tag/dictionary').default,
-    Dictionary: require('jsdoc/tag/dictionary').Dictionary,
-    definitions: require('jsdoc/tag/dictionary/definitions'),
-  },
-};
-
-var originalDictionary = jsdoc.tag.dictionary;
+var originalDictionary = dictionary;
 
 var jasmineAll = require('./lib/jasmine');
 
@@ -46,10 +35,10 @@ jasmine.getParseResults = function () {
 jasmine.jsParser = (function () {
   var parser = 'js';
 
-  if (jsdoc.env.opts.query && jsdoc.env.opts.query.parser) {
-    parser = jsdoc.env.opts.query.parser;
+  if (env.opts.query && env.opts.query.parser) {
+    parser = env.opts.query.parser;
     // remove this so the config tests don't complain
-    delete jsdoc.env.opts.query;
+    delete env.opts.query;
   }
 
   return parser;
@@ -66,11 +55,11 @@ jasmine.initialize = function (done) {
   }
 
   var reporterOpts = {
-    color: !jsdoc.env.opts.nocolor,
+    color: !env.opts.nocolor,
     onComplete: done,
   };
 
-  reporter = jsdoc.env.opts.verbose
+  reporter = env.opts.verbose
     ? new jasmineNode.TerminalVerboseReporter(reporterOpts)
     : new jasmineNode.TerminalReporter(reporterOpts);
   jasmineEnv.addReporter(reporter);
@@ -83,7 +72,7 @@ jasmine.initialize = function (done) {
 };
 
 jasmine.createParser = function (type) {
-  return jsdoc.src.parser.createParser(type || jasmine.jsParser);
+  return createParser(type || jasmine.jsParser);
 };
 
 /**
@@ -112,7 +101,7 @@ jasmine.executeSpecsInFolder = function (folder, done, opts) {
       require(filename
         .path()
         .replace(/\\/g, '/')
-        .replace(new RegExp(`^${jsdoc.env.dirname}/test`), './')
+        .replace(new RegExp(`^${env.dirname}/test`), './')
         .replace(/\.\w+$/, ''));
     }
 
@@ -151,17 +140,17 @@ jasmine.asyncSpecDone = function () {
 jasmine.getDocSetFromFile = function (filename, parser, validate, augment) {
   var doclets;
 
-  var sourceCode = fs.readFileSync(path.join(jsdoc.env.dirname, filename), 'utf8');
+  var sourceCode = fs.readFileSync(path.join(env.dirname, filename), 'utf8');
   var testParser = parser || jasmine.createParser();
 
-  jsdoc.src.handlers.attachTo(testParser);
+  attachTo(testParser);
 
   /* eslint-disable no-script-url */
   doclets = testParser.parse(`javascript:${sourceCode}`);
   /* eslint-enable no-script-url */
 
   if (augment !== false) {
-    jsdoc.augment.augmentAll(doclets);
+    augmentAll(doclets);
   }
 
   // test assume borrows have not yet been resolved
@@ -181,23 +170,23 @@ jasmine.getDocSetFromFile = function (filename, parser, validate, augment) {
 };
 
 jasmine.replaceTagDictionary = function (dictionaryNames) {
-  var dict = new jsdoc.tag.Dictionary();
-  var originalDictionaries = jsdoc.env.conf.tags.dictionaries.slice(0);
+  var dict = new Dictionary();
+  var originalDictionaries = env.conf.tags.dictionaries.slice(0);
 
   if (!Array.isArray(dictionaryNames)) {
     dictionaryNames = [dictionaryNames];
   }
 
-  jsdoc.env.conf.tags.dictionaries = dictionaryNames;
+  env.conf.tags.dictionaries = dictionaryNames;
 
-  jsdoc.tag.definitions.defineTags(dict);
-  jsdoc.doclet._replaceDictionary(dict);
+  defineTags(dict);
+  replaceDocletDictionary(dict);
 
-  jsdoc.env.conf.tags.dictionaries = originalDictionaries;
+  env.conf.tags.dictionaries = originalDictionaries;
 };
 
 jasmine.restoreTagDictionary = function () {
-  jsdoc.doclet._replaceDictionary(originalDictionary);
+  replaceDocletDictionary(originalDictionary);
 };
 
 // set up jasmine's global functions

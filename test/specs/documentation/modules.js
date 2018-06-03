@@ -16,7 +16,7 @@ describe('module names', () => {
     env.pwd = env.dirname;
     env.sourceFiles = [];
     srcParser = jasmine.createParser();
-    require('jsdoc/src/handlers').default.attachTo(srcParser);
+    require('jsdoc/src/handlers').attachTo(srcParser);
   });
 
   afterEach(() => {

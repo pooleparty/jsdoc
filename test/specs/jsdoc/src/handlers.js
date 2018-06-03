@@ -1,18 +1,18 @@
-import handlers from 'jsdoc/src/handlers';
+import { attachTo } from 'jsdoc/src/handlers';
 
 describe('jsdoc/src/handlers', () => {
   var testParser = jasmine.createParser();
 
-  handlers.attachTo(testParser);
+  attachTo(testParser);
 
-  it('should exist', () => {
-    expect(handlers).toBeDefined();
-    expect(typeof handlers).toEqual('object');
-  });
+  // it('should exist', () => {
+  //   expect(handlers).toBeDefined();
+  //   expect(typeof handlers).toEqual('object');
+  // });
 
   it('should export an "attachTo" function', () => {
-    expect(handlers.attachTo).toBeDefined();
-    expect(typeof handlers.attachTo).toEqual('function');
+    expect(attachTo).toBeDefined();
+    expect(typeof attachTo).toEqual('function');
   });
 
   describe('attachTo', () => {

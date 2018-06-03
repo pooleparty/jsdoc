@@ -333,7 +333,7 @@ module.exports = (function () {
   }
 
   cli.createParser = function () {
-    var handlers = require('./lib/jsdoc/src/handlers').default;
+    var { attachTo } = require('./lib/jsdoc/src/handlers');
     var plugins = require('./lib/jsdoc/plugins');
 
     app.jsdoc.parser = createParser(env.conf.parser);
@@ -343,7 +343,7 @@ module.exports = (function () {
       plugins.installPlugins(env.conf.plugins, app.jsdoc.parser);
     }
 
-    handlers.attachTo(app.jsdoc.parser);
+    attachTo(app.jsdoc.parser);
 
     return cli;
   };
