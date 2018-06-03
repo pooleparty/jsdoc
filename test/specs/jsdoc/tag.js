@@ -4,7 +4,7 @@ describe('jsdoc/tag', () => {
   var jsdoc = {
     env: require('jsdoc/env'),
     tag: require('jsdoc/tag'),
-    dictionary: require('jsdoc/tag/dictionary'),
+    dictionary: require('jsdoc/tag/dictionary').default,
     type: require('jsdoc/tag/type'),
   };
   var logger = require('jsdoc/util/logger').default;

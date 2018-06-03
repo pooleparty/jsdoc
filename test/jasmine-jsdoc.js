@@ -14,7 +14,8 @@ var jsdoc = {
     parser: require('jsdoc/src/parser'),
   },
   tag: {
-    dictionary: require('jsdoc/tag/dictionary'),
+    dictionary: require('jsdoc/tag/dictionary').default,
+    Dictionary: require('jsdoc/tag/dictionary').Dictionary,
     definitions: require('jsdoc/tag/dictionary/definitions'),
   },
 };
@@ -180,7 +181,7 @@ jasmine.getDocSetFromFile = function (filename, parser, validate, augment) {
 };
 
 jasmine.replaceTagDictionary = function (dictionaryNames) {
-  var dict = new jsdoc.tag.dictionary.Dictionary();
+  var dict = new jsdoc.tag.Dictionary();
   var originalDictionaries = jsdoc.env.conf.tags.dictionaries.slice(0);
 
   if (!Array.isArray(dictionaryNames)) {

@@ -16,7 +16,7 @@ describe('jsdoc/tag/validator', () => {
   });
 
   describe('validate', () => {
-    var dictionary = require('jsdoc/tag/dictionary');
+    var dictionary = require('jsdoc/tag/dictionary').default;
 
     var allowUnknown = Boolean(env.conf.tags.allowUnknownTags);
     var badTag = { title: 'lkjasdlkjfb' };
